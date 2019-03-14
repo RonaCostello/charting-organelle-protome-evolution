@@ -137,7 +137,7 @@ def identify_changes(orthogroup, orthogroup_tree, number_of_genes, ancestral_sta
 
 def main():
 	os.chdir(output_location)
-	with open("2-way_filtered_results." + timestr + ".csv", 'wb') as csvfile:
+	with open(result_file, 'wb') as csvfile:
 		outwriter = csv.writer(csvfile, delimiter = ',', quotechar = ' ', quoting = csv.QUOTE_MINIMAL)
 		outwriter.writerow(["orthogroup", "Location", "Change", "node", "node_up", "species_tree_node", "number of genes"])
 		os.chdir(species_tree_location)
@@ -158,7 +158,8 @@ def main():
 				number_of_genes += 1
 			if int(number_of_genes) < 50:                 # Skip orthogroups of less than 50 genes
 				continue
-			print(orthogroup)
+			# print(orthogroup)
+			print("Script running!")
 
 			gene_tree_species_tree_node_match = map_nodes_to_species_tree(orthogroup)     # Fill dict [gene tree node] = gene tree node, duplication or speciation
 			os.chdir(location_of_localisation_predictions)
@@ -177,7 +178,7 @@ def main():
 			continue
 
 	os.chdir(output_location)
-	with open("tally_of_filtered_results." + timestr + ".csv", 'wb') as f:
+	with open(species_tree_tally_results, 'wb') as f:
 		w = csv.writer(f, delimiter = ',', quotechar = ' ', quoting = csv.QUOTE_MINIMAL)
 		w.writerow(["node", "chloroplast gain", "chloroplast lost", "mitochondria gain", "mitochondria lost", "secretory gain", "secretory lost", "peroxisome gain", "peroxisome lost"])
 		for key in gain_and_loss_on_species_tree:
@@ -190,10 +191,10 @@ def main():
 
 	# Script to turn the csv output of the tallied changes into an array for illustrator
 	# NOT TESTED YET #
-	with open("tally_of_filtered_results." + timestr + ".csv") as file:
+	with open(species_tree_tally_results) as file:
 		content = file.readlines()[1:]
 	content = [x.strip() for x in content]
-	with open("tally_of_filtered_results.tally." + timestr + ".txt", "w") as f:
+	with open(species_tree_tally_results + ".illustrator.csv", "w") as f:
 		f.write(str(content))
 
 
