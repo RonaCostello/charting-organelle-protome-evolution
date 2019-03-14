@@ -8,6 +8,11 @@ from ete3 import Tree
 import os
 import re
 import time
+import sys
+
+if len(sys.argv) < 2:
+	print("Please give a relocalisation retention score between 0.0 and 1.0")
+	quit()
 
 timestr = time.strftime("%Y%m%d")
 result_file = ("filtered_results." + timestr + ".csv")
@@ -17,6 +22,8 @@ location_of_orthogroup_trees = ("/cellar/rona/Phytozome10/Phyldog/output_combine
 location_of_localisation_predictions = ("/cellar/rona/subcellular_localisation_prediction/TargetP_PredAlgo_PTS1/results_by_orthogroup/RC_5")
 location_of_ACE_likelihoods =("/cellar/rona/ancestral_state_estimation/ancestral_state_likelihoods/TargetP_PredAlgo_PTS1_likelihoods/RC_5")
 output_location = ("/cellar/rona/ancestral_state_estimation/mapping_changes_in_ACE/")
+
+relocalisation_retention_score = float(sys.argv[1])
 
 # Function that takes an orthogroup gene tree and uses the associated recon file to build a dictionary with each node of the gene tree as a key with its corresponding node on the species tree as a value
 def map_nodes_to_species_tree(orthogroup):
@@ -97,7 +104,7 @@ def identify_changes(orthogroup, orthogroup_tree, number_of_genes, ancestral_sta
 						no_retained_in_outgroup += 1.0
 				# Now check if for this node, the change passes the 2-way filtration. Can adjust the cutoff for % retention.
 				# Also can make it a one-way filtration by blocking out the second condition.
-				if (no_retained_in_descendants/total_leaves) > 0.75 and (no_retained_in_outgroup/total_leaves_outgroup) > 0.75:
+				if (no_retained_in_descendants/total_leaves) > relocalisation_retention_score and (no_retained_in_outgroup/total_leaves_outgroup) > relocalisation_retention_score:
 					gain_and_loss_on_species_tree[gene_tree_species_tree_node_match[node.name]][2*(i)] += 1
 					outwriter.writerow([orthogroup, L, "G", node.name, (node.up).name, gene_tree_species_tree_node_match[node.name], number_of_genes])
 
@@ -123,7 +130,7 @@ def identify_changes(orthogroup, orthogroup_tree, number_of_genes, ancestral_sta
 					gene = (str(leaf))[3:]
 					if int(subcellular_location_of_gene[gene][i]) == 1:
 						no_retained_in_outgroup += 1.0
-				if (no_retained_in_descendants/total_leaves) > 0.75 and (no_retained_in_outgroup/total_leaves_outgroup) > 0.75:
+				if (no_retained_in_descendants/total_leaves) > relocalisation_retention_score and (no_retained_in_outgroup/total_leaves_outgroup) > relocalisation_retention_score:
 					gain_and_loss_on_species_tree[gene_tree_species_tree_node_match[node.name]][(2*(i)) + 1] += 1
 					outwriter.writerow([orthogroup, L, "L", node.name, (node.up).name, gene_tree_species_tree_node_match[node.name], number_of_genes])
 
@@ -191,4 +198,3 @@ def main():
 
 if __name__ == '__main__':
 	main()
->>>>>>> Stashed changes
