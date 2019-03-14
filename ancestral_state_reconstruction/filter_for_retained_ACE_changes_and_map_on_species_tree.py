@@ -17,11 +17,11 @@ if len(sys.argv) < 2:
 timestr = time.strftime("%Y%m%d")
 result_file = ("filtered_results." + timestr + ".csv")
 species_tree_tally_results = ("filtered_results.tally." + timestr + ".csv")
-species_tree_location = ("/cellar/rona/Phytozome10/Phyldog")
-location_of_orthogroup_trees = ("/cellar/rona/Phytozome10/Phyldog/output_combined_dlcparFormat")
-location_of_localisation_predictions = ("/cellar/rona/subcellular_localisation_prediction/TargetP_PredAlgo_PTS1/results_by_orthogroup/RC_5")
-location_of_ACE_likelihoods =("/cellar/rona/ancestral_state_estimation/ancestral_state_likelihoods/TargetP_PredAlgo_PTS1_likelihoods/RC_5")
-output_location = ("/cellar/rona/ancestral_state_estimation/mapping_changes_in_ACE/")
+species_tree_location = ("/home/rona/Phytozome10/Phyldog")
+location_of_orthogroup_trees = ("/home/rona/Phytozome10/Phyldog/output_combined_dlcparFormat")
+location_of_localisation_predictions = ("/home/rona/chapter-1/subcellular_localisation_prediction/TargetP_PredAlgo_PTS1_PTS2/results_by_orthogroup/RC_5")
+location_of_ACE_likelihoods =("/home/rona/chapter-1/ancestral_state_estimation/ancestral_state_likelihoods/TargetP_PredAlgo_PTS1_PTS2_likelihoods/RC_5")
+output_location = ("/home/rona/chapter-1/ancestral_state_estimation/git-repos/charting-organelle-protome-evolution/ancestral_state_reconstruction")
 
 relocalisation_retention_score = float(sys.argv[1])
 
@@ -135,11 +135,11 @@ def identify_changes(orthogroup, orthogroup_tree, number_of_genes, ancestral_sta
 					outwriter.writerow([orthogroup, L, "L", node.name, (node.up).name, gene_tree_species_tree_node_match[node.name], number_of_genes])
 
 def main():
-	os.chdir("/home/rona/ancestral_state_estimation/mapping_changes_in_ACE")
+	os.chdir(output_location)
 	with open("2-way_filtered_results." + timestr + ".csv", 'wb') as csvfile:
 		outwriter = csv.writer(csvfile, delimiter = ',', quotechar = ' ', quoting = csv.QUOTE_MINIMAL)
 		outwriter.writerow(["orthogroup", "Location", "Change", "node", "node_up", "species_tree_node", "number of genes"])
-		os.chdir("/cellar/rona/Phytozome10/Phyldog")
+		os.chdir(species_tree_location)
 		species_tree = Tree("Phytozome10_constrainedTree_rooted_labelled.tree", format=1)
 		# Initiate a dictionary which will hold the numbers of gains and losses at each node in the species tree (all start with a value of zero).
 		gain_and_loss_on_species_tree = {} # node: Cgain, Closs, Mgain, Mloss, Sgain, Sloss, Pgain, Ploss
@@ -147,7 +147,7 @@ def main():
 			gain_and_loss_on_species_tree[node.name] = [0, 0, 0, 0, 0, 0, 0, 0]  # Format chloro gain, chloro loss, mito gain, mito loss, secretory gain, secretory loss, PTS1 gain, PTS1 loss
 
 		number_of_orthogroups = 0
-		os.chdir("/home/rona/Phytozome10/Phyldog/output_full_dataset")
+		os.chdir(location_of_orthogroup_trees)
 		for filename in glob.glob("OG*.locus.tree"):      # Iterate through the orthogroup (gene) tree files
 			number_of_orthogroups += 1
 			orthogroup = (filename[:-11])                 # Pull out the orthogroup number
@@ -160,14 +160,14 @@ def main():
 			print(orthogroup)
 
 			gene_tree_species_tree_node_match = map_nodes_to_species_tree(orthogroup)     # Fill dict [gene tree node] = gene tree node, duplication or speciation
-			os.chdir("/home/rona/subcellular_localisation_prediction/TargetP_PredAlgo_PTS1_PTS2/results_by_orthogroup/RC_5")
+			os.chdir(location_of_localisation_predictions)
 			subcellular_location_of_gene = get_gene_locations(orthogroup)            # For each gene in the orthogroup, initiate a dict to store its predicited subcellular localisation
-			os.chdir("/home/rona/ancestral_state_estimation/ancestral_state_likelihoods/TargetP_PredAlgo_PTS1_PTS2_likelihoods/RC_5")
+			os.chdir(location_of_ACE_likelihoods)
 			ancestral_state_at_orthogroup_node = get_ancestral_states(orthogroup)        # For each node in the orthogroup tree, initiate a dict to store its ancestral state estimation
 
 			## Identify changes in ancestral state on the orthogroup tree
 			identify_changes(orthogroup, orthogroup_tree, number_of_genes, ancestral_state_at_orthogroup_node, subcellular_location_of_gene, gain_and_loss_on_species_tree, gene_tree_species_tree_node_match, outwriter)
-			os.chdir("/home/rona/Phytozome10/Phyldog/output_full_dataset")
+			os.chdir(location_of_orthogroup_trees)
 
 	for key in gain_and_loss_on_species_tree:
 		if key.startswith("N"):
@@ -175,7 +175,7 @@ def main():
 		else:
 			continue
 
-	os.chdir("/home/rona/ancestral_state_estimation/mapping_changes_in_ACE")
+	os.chdir(output_location)
 	with open("tally_of_filtered_results." + timestr + ".csv", 'wb') as f:
 		w = csv.writer(f, delimiter = ',', quotechar = ' ', quoting = csv.QUOTE_MINIMAL)
 		w.writerow(["node", "chloroplast gain", "chloroplast lost", "mitochondria gain", "mitochondria lost", "secretory gain", "secretory lost", "peroxisome gain", "peroxisome lost"])
