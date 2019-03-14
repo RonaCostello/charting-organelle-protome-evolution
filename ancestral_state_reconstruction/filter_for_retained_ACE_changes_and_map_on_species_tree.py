@@ -10,15 +10,16 @@ import re
 import time
 import sys
 
-if len(sys.argv) < 2:
-	print("Please give a relocalisation retention score between 0.0 and 1.0")
+if len(sys.argv) < 3:
+	print("Please specify a relocalisation retention score between 0.0 and 1.0 and name of the output file")
+	print("e.g.")
+	print("script 0.75 output_0.75")
 	quit()
 
-timestr = time.strftime("%Y%m%d")
-result_file = ("filtered_results." + timestr + ".csv")
-species_tree_tally_results = ("filtered_results.tally." + timestr + ".csv")
+result_file = (sys.argv[2] + ".csv")
+species_tree_tally_results = (result_file + ".tally.csv")
 species_tree_location = ("/home/rona/Phytozome10/Phyldog")
-location_of_orthogroup_trees = ("/home/rona/Phytozome10/Phyldog/output_combined_dlcparFormat")
+location_of_orthogroup_trees = ("/home/rona/Phytozome10/Phyldog/output_full_dataset")
 location_of_localisation_predictions = ("/home/rona/chapter-1/subcellular_localisation_prediction/TargetP_PredAlgo_PTS1_PTS2/results_by_orthogroup/RC_5")
 location_of_ACE_likelihoods =("/home/rona/chapter-1/ancestral_state_estimation/ancestral_state_likelihoods/TargetP_PredAlgo_PTS1_PTS2_likelihoods/RC_5")
 output_location = ("/home/rona/chapter-1/ancestral_state_estimation/git-repos/charting-organelle-protome-evolution/ancestral_state_reconstruction")
