@@ -137,6 +137,7 @@ def identify_changes(orthogroup, orthogroup_tree, number_of_genes, ancestral_sta
 
 def main():
 	os.chdir(output_location)
+	print("Script running!")
 	with open(result_file, 'wb') as csvfile:
 		outwriter = csv.writer(csvfile, delimiter = ',', quotechar = ' ', quoting = csv.QUOTE_MINIMAL)
 		outwriter.writerow(["orthogroup", "Location", "Change", "node", "node_up", "species_tree_node", "number of genes"])
@@ -159,7 +160,6 @@ def main():
 			if int(number_of_genes) < 50:                 # Skip orthogroups of less than 50 genes
 				continue
 			# print(orthogroup)
-			print("Script running!")
 
 			gene_tree_species_tree_node_match = map_nodes_to_species_tree(orthogroup)     # Fill dict [gene tree node] = gene tree node, duplication or speciation
 			os.chdir(location_of_localisation_predictions)
