@@ -105,7 +105,7 @@ def identify_changes(orthogroup, orthogroup_tree, number_of_genes, ancestral_sta
 						no_retained_in_outgroup += 1.0
 				# Now check if for this node, the change passes the 2-way filtration. Can adjust the cutoff for % retention.
 				# Also can make it a one-way filtration by blocking out the second condition.
-				if (no_retained_in_descendants/total_leaves) > relocalisation_retention_score and (no_retained_in_outgroup/total_leaves_outgroup) > relocalisation_retention_score:
+				if (no_retained_in_descendants/total_leaves) >= relocalisation_retention_score and (no_retained_in_outgroup/total_leaves_outgroup) >= relocalisation_retention_score:
 					gain_and_loss_on_species_tree[gene_tree_species_tree_node_match[node.name]][2*(i)] += 1
 					outwriter.writerow([orthogroup, L, "G", node.name, (node.up).name, gene_tree_species_tree_node_match[node.name], number_of_genes])
 
@@ -131,7 +131,7 @@ def identify_changes(orthogroup, orthogroup_tree, number_of_genes, ancestral_sta
 					gene = (str(leaf))[3:]
 					if int(subcellular_location_of_gene[gene][i]) == 1:
 						no_retained_in_outgroup += 1.0
-				if (no_retained_in_descendants/total_leaves) > relocalisation_retention_score and (no_retained_in_outgroup/total_leaves_outgroup) > relocalisation_retention_score:
+				if (no_retained_in_descendants/total_leaves) >= relocalisation_retention_score and (no_retained_in_outgroup/total_leaves_outgroup) >= relocalisation_retention_score:
 					gain_and_loss_on_species_tree[gene_tree_species_tree_node_match[node.name]][(2*(i)) + 1] += 1
 					outwriter.writerow([orthogroup, L, "L", node.name, (node.up).name, gene_tree_species_tree_node_match[node.name], number_of_genes])
 
