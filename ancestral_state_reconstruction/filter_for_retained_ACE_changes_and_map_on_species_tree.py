@@ -190,7 +190,6 @@ def main():
 	print("Number of orthogroups: " + str(number_of_orthogroups))
 
 	# Script to turn the csv output of the tallied changes into an array for illustrator
-	# NOT TESTED YET #
 	with open(species_tree_tally_results) as file:
 		content = file.readlines()[1:]
 	content = [x.strip() for x in content]
