@@ -157,7 +157,7 @@ def main():
 			number_of_genes = 0
 			for leaf in orthogroup_tree:                  # The number of leaves in the tree = the number of genes in the orthogroup
 				number_of_genes += 1
-			if int(number_of_genes) < 50:                 # Skip orthogroups of less than 50 genes
+			if int(number_of_genes) < 4:                 # Skip orthogroups of less than 4 genes
 				continue
 			# print(orthogroup)
 
