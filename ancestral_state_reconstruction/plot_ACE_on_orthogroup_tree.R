@@ -2,12 +2,14 @@ library(phytools)
 #library(ape)
 #library(geiger)
 
-## Things hashed out are needed to compute recon trees directly from orthoFinder :) ## 
+## Things hashed out are needed to compute recon trees directly from orthoFinder :) ##
 
-tree_file <- "OG0002885.locus.tree"
+orthogroup = ""
+
+tree_file <- sprintf("%s.locus.tree", orthogroup)
 # tree_with_names_file <- "OG0002508.tree_for_ACE_resolved_names.txt"
-my_data_file <- "OG0002885.location.data"          
-output_file_name <- "OG0002885_ACE_chloro.svg"
+my_data_file <- sprintf("%s.location.data", orthogroup)
+output_file_name <- sprintf("%s_ACE_chloro.svg", orthogroup)
 colour = 'green'
 
 tree <- (read.newick(tree_file))
