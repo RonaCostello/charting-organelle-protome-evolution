@@ -60,7 +60,7 @@ def get_ancestral_states(orthogroup):
 			if "-" in str(ancestral_state_at_orthogroup_node[key][i]):
 				ancestral_state_at_orthogroup_node[key][i] = 0
 				continue
-			if float(ancestral_state_at_orthogroup_node[key][i]) >= 0.5:
+			if float(ancestral_state_at_orthogroup_node[key][i]) > 0.5:
 				ancestral_state_at_orthogroup_node[key][i] = 1
 				continue
 			else:
