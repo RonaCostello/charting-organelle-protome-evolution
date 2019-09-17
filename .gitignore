@@ -1,4 +1,4 @@
 *.csv
 /affects_of_missing_gene_models_on_mapping/data*
 /affects_of_missing_gene_models_on_mapping/tree_example_1
-/substitution_rate_vs_relocalisations
+/substitution_rate_vs_relocalisations/data*
