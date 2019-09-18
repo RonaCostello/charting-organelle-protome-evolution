@@ -15,6 +15,9 @@ def set_up_results_file(tree):
 def topology_between_nodes(tree, node1, node2):
     start_node = tree&node1
     end_node = tree&node2
+    common_ancestor = (tree.get_common_ancestor(node1, node2))
+    if common_ancestor != end_node and start_node != end_node:
+        raise Exception('node2 must be an ancestor of node1 and not a sister node')
 
     distance = tree.get_distance(start_node, end_node, topology_only=True)
 
