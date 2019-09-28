@@ -70,7 +70,7 @@ def main():
                 nodes_nonrelocalisation_branches.append(gene_tree_node_mapped)
 
     with open('substitution_rate_on_relocalisation_branches_with_nodes.csv', 'w') as f:
-        csv.writer(f).writerow(["substitution_rate_on_relocalisation_branches", "species_tree_node_for_reloc_branch" "substitution_rate_on_non_relocalisation_branches", "species_tree_node_for_nonreloc_branch"])
+        csv.writer(f).writerow(["substitution_rate_on_relocalisation_branches", "species_tree_node_for_reloc_branch", "substitution_rate_on_non_relocalisation_branches", "species_tree_node_for_nonreloc_branch"])
         csv.writer(f).writerows(it.zip_longest(results_relocalisation_branches, nodes_relocalisation_branches, results_nonrelocalisation_branches, nodes_nonrelocalisation_branches))
 
 
